@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, User } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/patients")({
+export const Route = createFileRoute("/_authenticated/patients/")({
   head: () => ({ meta: [{ title: "Patients — NurseGuard AI" }] }),
   component: Patients,
 });
