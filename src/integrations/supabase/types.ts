@@ -757,6 +757,110 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_transactions: {
+        Row: {
+          amount_ngn: number
+          channel: string | null
+          created_at: string
+          currency: string
+          id: string
+          paystack_event: string | null
+          plan_code: string | null
+          raw: Json | null
+          reference: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_ngn: number
+          channel?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          paystack_event?: string | null
+          plan_code?: string | null
+          raw?: Json | null
+          reference: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_ngn?: number
+          channel?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          paystack_event?: string | null
+          plan_code?: string | null
+          raw?: Json | null
+          reference?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_transactions_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      plans: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          features: Json
+          id: string
+          interval: string
+          is_active: boolean
+          max_clinicians: number | null
+          max_patients: number | null
+          name: string
+          price_ngn: number
+          sort_order: number
+          trial_days: number
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          features?: Json
+          id?: string
+          interval?: string
+          is_active?: boolean
+          max_clinicians?: number | null
+          max_patients?: number | null
+          name: string
+          price_ngn?: number
+          sort_order?: number
+          trial_days?: number
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          features?: Json
+          id?: string
+          interval?: string
+          is_active?: boolean
+          max_clinicians?: number | null
+          max_patients?: number | null
+          name?: string
+          price_ngn?: number
+          sort_order?: number
+          trial_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -784,6 +888,36 @@ export type Database = {
           organization?: string | null
           phone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          redeemed_at: string | null
+          referred_user_id: string | null
+          referrer_id: string
+          reward_ngn: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          redeemed_at?: string | null
+          referred_user_id?: string | null
+          referrer_id: string
+          reward_ngn?: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          redeemed_at?: string | null
+          referred_user_id?: string | null
+          referrer_id?: string
+          reward_ngn?: number
         }
         Relationships: []
       }
@@ -822,6 +956,65 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "patients"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          last_reference: string | null
+          paystack_authorization_code: string | null
+          paystack_customer_code: string | null
+          paystack_subscription_code: string | null
+          plan_code: string
+          status: string
+          trial_ends_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          last_reference?: string | null
+          paystack_authorization_code?: string | null
+          paystack_customer_code?: string | null
+          paystack_subscription_code?: string | null
+          plan_code: string
+          status?: string
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          last_reference?: string | null
+          paystack_authorization_code?: string | null
+          paystack_customer_code?: string | null
+          paystack_subscription_code?: string | null
+          plan_code?: string
+          status?: string
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -899,6 +1092,60 @@ export type Database = {
           },
         ]
       }
+      wallet_accounts: {
+        Row: {
+          balance_ngn: number
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance_ngn?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance_ngn?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallet_transactions: {
+        Row: {
+          amount_ngn: number
+          created_at: string
+          direction: string
+          id: string
+          reason: string
+          reference: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_ngn: number
+          created_at?: string
+          direction: string
+          id?: string
+          reason: string
+          reference?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_ngn?: number
+          created_at?: string
+          direction?: string
+          id?: string
+          reason?: string
+          reference?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -906,6 +1153,12 @@ export type Database = {
     Functions: {
       can_access_patient: {
         Args: { _patient_id: string; _user_id: string }
+        Returns: boolean
+      }
+      claim_referral: { Args: { _code: string }; Returns: boolean }
+      current_plan_code: { Args: { _user_id: string }; Returns: string }
+      has_active_subscription: {
+        Args: { _min_plan?: string; _user_id: string }
         Returns: boolean
       }
       has_role: {
