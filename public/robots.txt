@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /patients
+Disallow: /vitals
+Disallow: /medications
+Disallow: /appointments
+Disallow: /alerts
