@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedMentalHealthRouteImport } from './routes/_authenticated/mental-health'
 import { Route as AuthenticatedMedicationsRouteImport } from './routes/_authenticated/medications'
 import { Route as AuthenticatedMaternalRouteImport } from './routes/_authenticated/maternal'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -41,6 +42,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMentalHealthRoute =
+  AuthenticatedMentalHealthRouteImport.update({
+    id: '/mental-health',
+    path: '/mental-health',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMedicationsRoute =
   AuthenticatedMedicationsRouteImport.update({
     id: '/medications',
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
+  '/mental-health': typeof AuthenticatedMentalHealthRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -107,6 +115,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
+  '/mental-health': typeof AuthenticatedMentalHealthRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
@@ -122,6 +131,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/maternal': typeof AuthenticatedMaternalRoute
   '/_authenticated/medications': typeof AuthenticatedMedicationsRoute
+  '/_authenticated/mental-health': typeof AuthenticatedMentalHealthRoute
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/maternal'
     | '/medications'
+    | '/mental-health'
     | '/patients/$id'
     | '/vitals/new'
     | '/patients/'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/maternal'
     | '/medications'
+    | '/mental-health'
     | '/patients/$id'
     | '/vitals/new'
     | '/patients'
@@ -164,6 +176,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/maternal'
     | '/_authenticated/medications'
+    | '/_authenticated/mental-health'
     | '/_authenticated/patients/$id'
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/mental-health': {
+      id: '/_authenticated/mental-health'
+      path: '/mental-health'
+      fullPath: '/mental-health'
+      preLoaderRoute: typeof AuthenticatedMentalHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/medications': {
       id: '/_authenticated/medications'
@@ -271,6 +291,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMaternalRoute: typeof AuthenticatedMaternalRoute
   AuthenticatedMedicationsRoute: typeof AuthenticatedMedicationsRoute
+  AuthenticatedMentalHealthRoute: typeof AuthenticatedMentalHealthRoute
   AuthenticatedPatientsIdRoute: typeof AuthenticatedPatientsIdRoute
   AuthenticatedVitalsNewRoute: typeof AuthenticatedVitalsNewRoute
   AuthenticatedPatientsIndexRoute: typeof AuthenticatedPatientsIndexRoute
@@ -282,6 +303,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMaternalRoute: AuthenticatedMaternalRoute,
   AuthenticatedMedicationsRoute: AuthenticatedMedicationsRoute,
+  AuthenticatedMentalHealthRoute: AuthenticatedMentalHealthRoute,
   AuthenticatedPatientsIdRoute: AuthenticatedPatientsIdRoute,
   AuthenticatedVitalsNewRoute: AuthenticatedVitalsNewRoute,
   AuthenticatedPatientsIndexRoute: AuthenticatedPatientsIndexRoute,
