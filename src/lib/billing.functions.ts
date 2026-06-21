@@ -142,7 +142,7 @@ export async function applyPaystackEvent(
       status: success ? "success" : "failed",
       channel: tx.channel,
       paystack_event: event,
-      raw: tx as unknown as Record<string, unknown>,
+      raw: JSON.parse(JSON.stringify(tx)),
     },
     { onConflict: "reference" },
   );

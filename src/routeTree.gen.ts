@@ -18,12 +18,14 @@ import { Route as AuthenticatedMedicationsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedMaternalRouteImport } from './routes/_authenticated/maternal'
 import { Route as AuthenticatedHomeCareRouteImport } from './routes/_authenticated/home-care'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
 import { Route as AuthenticatedAiAssistantRouteImport } from './routes/_authenticated/ai-assistant'
 import { Route as AuthenticatedPatientsIndexRouteImport } from './routes/_authenticated/patients.index'
 import { Route as AuthenticatedVitalsNewRouteImport } from './routes/_authenticated/vitals.new'
 import { Route as AuthenticatedPatientsIdRouteImport } from './routes/_authenticated/patients.$id'
+import { Route as ApiPublicWebhooksPaystackRouteImport } from './routes/api/public/webhooks/paystack'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -71,6 +73,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAppointmentsRoute =
   AuthenticatedAppointmentsRouteImport.update({
     id: '/appointments',
@@ -104,6 +111,12 @@ const AuthenticatedPatientsIdRoute = AuthenticatedPatientsIdRouteImport.update({
   path: '/patients/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicWebhooksPaystackRoute =
+  ApiPublicWebhooksPaystackRouteImport.update({
+    id: '/api/public/webhooks/paystack',
+    path: '/api/public/webhooks/paystack',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -112,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/ai-assistant': typeof AuthenticatedAiAssistantRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/home-care': typeof AuthenticatedHomeCareRoute
   '/maternal': typeof AuthenticatedMaternalRoute
@@ -120,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
+  '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -128,6 +143,7 @@ export interface FileRoutesByTo {
   '/ai-assistant': typeof AuthenticatedAiAssistantRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/home-care': typeof AuthenticatedHomeCareRoute
   '/maternal': typeof AuthenticatedMaternalRoute
@@ -136,6 +152,7 @@ export interface FileRoutesByTo {
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
+  '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -146,6 +163,7 @@ export interface FileRoutesById {
   '/_authenticated/ai-assistant': typeof AuthenticatedAiAssistantRoute
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
+  '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/home-care': typeof AuthenticatedHomeCareRoute
   '/_authenticated/maternal': typeof AuthenticatedMaternalRoute
@@ -154,6 +172,7 @@ export interface FileRoutesById {
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
+  '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -164,6 +183,7 @@ export interface FileRouteTypes {
     | '/ai-assistant'
     | '/alerts'
     | '/appointments'
+    | '/billing'
     | '/dashboard'
     | '/home-care'
     | '/maternal'
@@ -172,6 +192,7 @@ export interface FileRouteTypes {
     | '/patients/$id'
     | '/vitals/new'
     | '/patients/'
+    | '/api/public/webhooks/paystack'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -180,6 +201,7 @@ export interface FileRouteTypes {
     | '/ai-assistant'
     | '/alerts'
     | '/appointments'
+    | '/billing'
     | '/dashboard'
     | '/home-care'
     | '/maternal'
@@ -188,6 +210,7 @@ export interface FileRouteTypes {
     | '/patients/$id'
     | '/vitals/new'
     | '/patients'
+    | '/api/public/webhooks/paystack'
   id:
     | '__root__'
     | '/'
@@ -197,6 +220,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ai-assistant'
     | '/_authenticated/alerts'
     | '/_authenticated/appointments'
+    | '/_authenticated/billing'
     | '/_authenticated/dashboard'
     | '/_authenticated/home-care'
     | '/_authenticated/maternal'
@@ -205,6 +229,7 @@ export interface FileRouteTypes {
     | '/_authenticated/patients/$id'
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
+    | '/api/public/webhooks/paystack'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -212,6 +237,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiPublicWebhooksPaystackRoute: typeof ApiPublicWebhooksPaystackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -279,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/billing': {
+      id: '/_authenticated/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthenticatedBillingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/appointments': {
       id: '/_authenticated/appointments'
       path: '/appointments'
@@ -321,6 +354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPatientsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/webhooks/paystack': {
+      id: '/api/public/webhooks/paystack'
+      path: '/api/public/webhooks/paystack'
+      fullPath: '/api/public/webhooks/paystack'
+      preLoaderRoute: typeof ApiPublicWebhooksPaystackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -328,6 +368,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiAssistantRoute: typeof AuthenticatedAiAssistantRoute
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
+  AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHomeCareRoute: typeof AuthenticatedHomeCareRoute
   AuthenticatedMaternalRoute: typeof AuthenticatedMaternalRoute
@@ -342,6 +383,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAiAssistantRoute: AuthenticatedAiAssistantRoute,
   AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
+  AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHomeCareRoute: AuthenticatedHomeCareRoute,
   AuthenticatedMaternalRoute: AuthenticatedMaternalRoute,
@@ -360,6 +402,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiPublicWebhooksPaystackRoute: ApiPublicWebhooksPaystackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
