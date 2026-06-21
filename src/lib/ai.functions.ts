@@ -4,6 +4,12 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const inputSchema = z.object({ patient_id: z.string().uuid() });
 
+const assistantSchema = z.object({
+  patient_id: z.string().uuid(),
+  mode: z.enum(["nursing_note", "handover", "care_plan", "patient_education"]),
+  context: z.string().max(2000).optional(),
+});
+
 export const runEarlyWarning = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => inputSchema.parse(d))

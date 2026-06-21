@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedMentalHealthRouteImport } from './routes/_authenticated/mental-health'
 import { Route as AuthenticatedMedicationsRouteImport } from './routes/_authenticated/medications'
 import { Route as AuthenticatedMaternalRouteImport } from './routes/_authenticated/maternal'
+import { Route as AuthenticatedHomeCareRouteImport } from './routes/_authenticated/home-care'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
@@ -59,6 +60,11 @@ const AuthenticatedMaternalRoute = AuthenticatedMaternalRouteImport.update({
   path: '/maternal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedHomeCareRoute = AuthenticatedHomeCareRouteImport.update({
+  id: '/home-care',
+  path: '/home-care',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/home-care': typeof AuthenticatedHomeCareRoute
   '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
   '/mental-health': typeof AuthenticatedMentalHealthRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/home-care': typeof AuthenticatedHomeCareRoute
   '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
   '/mental-health': typeof AuthenticatedMentalHealthRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/home-care': typeof AuthenticatedHomeCareRoute
   '/_authenticated/maternal': typeof AuthenticatedMaternalRoute
   '/_authenticated/medications': typeof AuthenticatedMedicationsRoute
   '/_authenticated/mental-health': typeof AuthenticatedMentalHealthRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/appointments'
     | '/dashboard'
+    | '/home-care'
     | '/maternal'
     | '/medications'
     | '/mental-health'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/appointments'
     | '/dashboard'
+    | '/home-care'
     | '/maternal'
     | '/medications'
     | '/mental-health'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/_authenticated/alerts'
     | '/_authenticated/appointments'
     | '/_authenticated/dashboard'
+    | '/_authenticated/home-care'
     | '/_authenticated/maternal'
     | '/_authenticated/medications'
     | '/_authenticated/mental-health'
@@ -240,6 +252,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMaternalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/home-care': {
+      id: '/_authenticated/home-care'
+      path: '/home-care'
+      fullPath: '/home-care'
+      preLoaderRoute: typeof AuthenticatedHomeCareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -289,6 +308,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedHomeCareRoute: typeof AuthenticatedHomeCareRoute
   AuthenticatedMaternalRoute: typeof AuthenticatedMaternalRoute
   AuthenticatedMedicationsRoute: typeof AuthenticatedMedicationsRoute
   AuthenticatedMentalHealthRoute: typeof AuthenticatedMentalHealthRoute
@@ -301,6 +321,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedHomeCareRoute: AuthenticatedHomeCareRoute,
   AuthenticatedMaternalRoute: AuthenticatedMaternalRoute,
   AuthenticatedMedicationsRoute: AuthenticatedMedicationsRoute,
   AuthenticatedMentalHealthRoute: AuthenticatedMentalHealthRoute,
