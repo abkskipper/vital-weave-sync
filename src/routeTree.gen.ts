@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedMedicationsRouteImport } from './routes/_authenticated/medications'
+import { Route as AuthenticatedMaternalRouteImport } from './routes/_authenticated/maternal'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
@@ -46,6 +47,11 @@ const AuthenticatedMedicationsRoute =
     path: '/medications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMaternalRoute = AuthenticatedMaternalRouteImport.update({
+  id: '/maternal',
+  path: '/maternal',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/maternal': typeof AuthenticatedMaternalRoute
   '/_authenticated/medications': typeof AuthenticatedMedicationsRoute
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/appointments'
     | '/dashboard'
+    | '/maternal'
     | '/medications'
     | '/patients/$id'
     | '/vitals/new'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/appointments'
     | '/dashboard'
+    | '/maternal'
     | '/medications'
     | '/patients/$id'
     | '/vitals/new'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/_authenticated/alerts'
     | '/_authenticated/appointments'
     | '/_authenticated/dashboard'
+    | '/_authenticated/maternal'
     | '/_authenticated/medications'
     | '/_authenticated/patients/$id'
     | '/_authenticated/vitals/new'
@@ -199,6 +211,13 @@ declare module '@tanstack/react-router' {
       path: '/medications'
       fullPath: '/medications'
       preLoaderRoute: typeof AuthenticatedMedicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/maternal': {
+      id: '/_authenticated/maternal'
+      path: '/maternal'
+      fullPath: '/maternal'
+      preLoaderRoute: typeof AuthenticatedMaternalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -250,6 +269,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMaternalRoute: typeof AuthenticatedMaternalRoute
   AuthenticatedMedicationsRoute: typeof AuthenticatedMedicationsRoute
   AuthenticatedPatientsIdRoute: typeof AuthenticatedPatientsIdRoute
   AuthenticatedVitalsNewRoute: typeof AuthenticatedVitalsNewRoute
@@ -260,6 +280,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMaternalRoute: AuthenticatedMaternalRoute,
   AuthenticatedMedicationsRoute: AuthenticatedMedicationsRoute,
   AuthenticatedPatientsIdRoute: AuthenticatedPatientsIdRoute,
   AuthenticatedVitalsNewRoute: AuthenticatedVitalsNewRoute,
