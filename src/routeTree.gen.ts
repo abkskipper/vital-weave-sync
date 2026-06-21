@@ -13,10 +13,14 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedMentalHealthRouteImport } from './routes/_authenticated/mental-health'
 import { Route as AuthenticatedMedicationsRouteImport } from './routes/_authenticated/medications'
+import { Route as AuthenticatedMaternalRouteImport } from './routes/_authenticated/maternal'
+import { Route as AuthenticatedHomeCareRouteImport } from './routes/_authenticated/home-care'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
+import { Route as AuthenticatedAiAssistantRouteImport } from './routes/_authenticated/ai-assistant'
 import { Route as AuthenticatedPatientsIndexRouteImport } from './routes/_authenticated/patients.index'
 import { Route as AuthenticatedVitalsNewRouteImport } from './routes/_authenticated/vitals.new'
 import { Route as AuthenticatedPatientsIdRouteImport } from './routes/_authenticated/patients.$id'
@@ -40,12 +44,28 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMentalHealthRoute =
+  AuthenticatedMentalHealthRouteImport.update({
+    id: '/mental-health',
+    path: '/mental-health',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMedicationsRoute =
   AuthenticatedMedicationsRouteImport.update({
     id: '/medications',
     path: '/medications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMaternalRoute = AuthenticatedMaternalRouteImport.update({
+  id: '/maternal',
+  path: '/maternal',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHomeCareRoute = AuthenticatedHomeCareRouteImport.update({
+  id: '/home-care',
+  path: '/home-care',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -62,6 +82,12 @@ const AuthenticatedAlertsRoute = AuthenticatedAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAiAssistantRoute =
+  AuthenticatedAiAssistantRouteImport.update({
+    id: '/ai-assistant',
+    path: '/ai-assistant',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPatientsIndexRoute =
   AuthenticatedPatientsIndexRouteImport.update({
     id: '/patients/',
@@ -83,10 +109,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/ai-assistant': typeof AuthenticatedAiAssistantRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/home-care': typeof AuthenticatedHomeCareRoute
+  '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
+  '/mental-health': typeof AuthenticatedMentalHealthRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -95,10 +125,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/ai-assistant': typeof AuthenticatedAiAssistantRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/home-care': typeof AuthenticatedHomeCareRoute
+  '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
+  '/mental-health': typeof AuthenticatedMentalHealthRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
@@ -109,10 +143,14 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/ai-assistant': typeof AuthenticatedAiAssistantRoute
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/home-care': typeof AuthenticatedHomeCareRoute
+  '/_authenticated/maternal': typeof AuthenticatedMaternalRoute
   '/_authenticated/medications': typeof AuthenticatedMedicationsRoute
+  '/_authenticated/mental-health': typeof AuthenticatedMentalHealthRoute
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -123,10 +161,14 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/sitemap.xml'
+    | '/ai-assistant'
     | '/alerts'
     | '/appointments'
     | '/dashboard'
+    | '/home-care'
+    | '/maternal'
     | '/medications'
+    | '/mental-health'
     | '/patients/$id'
     | '/vitals/new'
     | '/patients/'
@@ -135,10 +177,14 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/sitemap.xml'
+    | '/ai-assistant'
     | '/alerts'
     | '/appointments'
     | '/dashboard'
+    | '/home-care'
+    | '/maternal'
     | '/medications'
+    | '/mental-health'
     | '/patients/$id'
     | '/vitals/new'
     | '/patients'
@@ -148,10 +194,14 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/sitemap.xml'
+    | '/_authenticated/ai-assistant'
     | '/_authenticated/alerts'
     | '/_authenticated/appointments'
     | '/_authenticated/dashboard'
+    | '/_authenticated/home-care'
+    | '/_authenticated/maternal'
     | '/_authenticated/medications'
+    | '/_authenticated/mental-health'
     | '/_authenticated/patients/$id'
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
@@ -194,11 +244,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/mental-health': {
+      id: '/_authenticated/mental-health'
+      path: '/mental-health'
+      fullPath: '/mental-health'
+      preLoaderRoute: typeof AuthenticatedMentalHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/medications': {
       id: '/_authenticated/medications'
       path: '/medications'
       fullPath: '/medications'
       preLoaderRoute: typeof AuthenticatedMedicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/maternal': {
+      id: '/_authenticated/maternal'
+      path: '/maternal'
+      fullPath: '/maternal'
+      preLoaderRoute: typeof AuthenticatedMaternalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/home-care': {
+      id: '/_authenticated/home-care'
+      path: '/home-care'
+      fullPath: '/home-care'
+      preLoaderRoute: typeof AuthenticatedHomeCareRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -220,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/alerts'
       fullPath: '/alerts'
       preLoaderRoute: typeof AuthenticatedAlertsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ai-assistant': {
+      id: '/_authenticated/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/ai-assistant'
+      preLoaderRoute: typeof AuthenticatedAiAssistantRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/patients/': {
@@ -247,20 +325,28 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAiAssistantRoute: typeof AuthenticatedAiAssistantRoute
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedHomeCareRoute: typeof AuthenticatedHomeCareRoute
+  AuthenticatedMaternalRoute: typeof AuthenticatedMaternalRoute
   AuthenticatedMedicationsRoute: typeof AuthenticatedMedicationsRoute
+  AuthenticatedMentalHealthRoute: typeof AuthenticatedMentalHealthRoute
   AuthenticatedPatientsIdRoute: typeof AuthenticatedPatientsIdRoute
   AuthenticatedVitalsNewRoute: typeof AuthenticatedVitalsNewRoute
   AuthenticatedPatientsIndexRoute: typeof AuthenticatedPatientsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAiAssistantRoute: AuthenticatedAiAssistantRoute,
   AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedHomeCareRoute: AuthenticatedHomeCareRoute,
+  AuthenticatedMaternalRoute: AuthenticatedMaternalRoute,
   AuthenticatedMedicationsRoute: AuthenticatedMedicationsRoute,
+  AuthenticatedMentalHealthRoute: AuthenticatedMentalHealthRoute,
   AuthenticatedPatientsIdRoute: AuthenticatedPatientsIdRoute,
   AuthenticatedVitalsNewRoute: AuthenticatedVitalsNewRoute,
   AuthenticatedPatientsIndexRoute: AuthenticatedPatientsIndexRoute,
