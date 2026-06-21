@@ -61,6 +61,69 @@ export type Database = {
           },
         ]
       }
+      antenatal_visits: {
+        Row: {
+          created_at: string
+          diastolic_bp: number | null
+          fetal_heart_rate: number | null
+          fundal_height_cm: number | null
+          gestational_age_weeks: number | null
+          id: string
+          maternal_id: string
+          notes: string | null
+          patient_id: string
+          recorded_by: string | null
+          systolic_bp: number | null
+          visit_date: string
+          weight_kg: number | null
+        }
+        Insert: {
+          created_at?: string
+          diastolic_bp?: number | null
+          fetal_heart_rate?: number | null
+          fundal_height_cm?: number | null
+          gestational_age_weeks?: number | null
+          id?: string
+          maternal_id: string
+          notes?: string | null
+          patient_id: string
+          recorded_by?: string | null
+          systolic_bp?: number | null
+          visit_date?: string
+          weight_kg?: number | null
+        }
+        Update: {
+          created_at?: string
+          diastolic_bp?: number | null
+          fetal_heart_rate?: number | null
+          fundal_height_cm?: number | null
+          gestational_age_weeks?: number | null
+          id?: string
+          maternal_id?: string
+          notes?: string | null
+          patient_id?: string
+          recorded_by?: string | null
+          systolic_bp?: number | null
+          visit_date?: string
+          weight_kg?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "antenatal_visits_maternal_id_fkey"
+            columns: ["maternal_id"]
+            isOneToOne: false
+            referencedRelation: "maternal_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "antenatal_visits_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           clinician_id: string | null
@@ -184,6 +247,56 @@ export type Database = {
           },
         ]
       }
+      child_records: {
+        Row: {
+          age_months: number | null
+          created_at: string
+          head_circumference_cm: number | null
+          height_cm: number | null
+          id: string
+          milestone_notes: string | null
+          muac_cm: number | null
+          patient_id: string
+          recorded_by: string | null
+          visit_date: string
+          weight_kg: number | null
+        }
+        Insert: {
+          age_months?: number | null
+          created_at?: string
+          head_circumference_cm?: number | null
+          height_cm?: number | null
+          id?: string
+          milestone_notes?: string | null
+          muac_cm?: number | null
+          patient_id: string
+          recorded_by?: string | null
+          visit_date?: string
+          weight_kg?: number | null
+        }
+        Update: {
+          age_months?: number | null
+          created_at?: string
+          head_circumference_cm?: number | null
+          height_cm?: number | null
+          id?: string
+          milestone_notes?: string | null
+          muac_cm?: number | null
+          patient_id?: string
+          recorded_by?: string | null
+          visit_date?: string
+          weight_kg?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "child_records_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       emergency_contacts: {
         Row: {
           created_at: string
@@ -215,6 +328,165 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "emergency_contacts_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      home_care_visits: {
+        Row: {
+          clinician_id: string | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          patient_id: string
+          scheduled_for: string
+          started_at: string | null
+          status: string
+          summary: string | null
+          tasks: Json | null
+          updated_at: string
+        }
+        Insert: {
+          clinician_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          patient_id: string
+          scheduled_for: string
+          started_at?: string | null
+          status?: string
+          summary?: string | null
+          tasks?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          clinician_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          patient_id?: string
+          scheduled_for?: string
+          started_at?: string | null
+          status?: string
+          summary?: string | null
+          tasks?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_care_visits_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      immunizations: {
+        Row: {
+          administered_on: string | null
+          created_at: string
+          dose_label: string | null
+          id: string
+          lot_number: string | null
+          next_due_on: string | null
+          notes: string | null
+          patient_id: string
+          recorded_by: string | null
+          site: string | null
+          vaccine: string
+        }
+        Insert: {
+          administered_on?: string | null
+          created_at?: string
+          dose_label?: string | null
+          id?: string
+          lot_number?: string | null
+          next_due_on?: string | null
+          notes?: string | null
+          patient_id: string
+          recorded_by?: string | null
+          site?: string | null
+          vaccine: string
+        }
+        Update: {
+          administered_on?: string | null
+          created_at?: string
+          dose_label?: string | null
+          id?: string
+          lot_number?: string | null
+          next_due_on?: string | null
+          notes?: string | null
+          patient_id?: string
+          recorded_by?: string | null
+          site?: string | null
+          vaccine?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "immunizations_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maternal_records: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          edd: string | null
+          gravida: number | null
+          id: string
+          lmp: string | null
+          notes: string | null
+          para: number | null
+          patient_id: string
+          risk_level: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          edd?: string | null
+          gravida?: number | null
+          id?: string
+          lmp?: string | null
+          notes?: string | null
+          para?: number | null
+          patient_id: string
+          risk_level?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          edd?: string | null
+          gravida?: number | null
+          id?: string
+          lmp?: string | null
+          notes?: string | null
+          para?: number | null
+          patient_id?: string
+          risk_level?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maternal_records_patient_id_fkey"
             columns: ["patient_id"]
             isOneToOne: false
             referencedRelation: "patients"
@@ -319,6 +591,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "medications_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mental_health_screenings: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          patient_id: string
+          recorded_by: string | null
+          responses: Json | null
+          score: number
+          severity: string
+          tool: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+          recorded_by?: string | null
+          responses?: Json | null
+          score: number
+          severity: string
+          tool: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          recorded_by?: string | null
+          responses?: Json | null
+          score?: number
+          severity?: string
+          tool?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mental_health_screenings_patient_id_fkey"
             columns: ["patient_id"]
             isOneToOne: false
             referencedRelation: "patients"
