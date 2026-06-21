@@ -89,3 +89,56 @@ export const runEarlyWarning = createServerFn({ method: "POST" })
 
     return { risk, summary };
   });
+
+const MODE_PROMPTS: Record<string, string> = {
+  nursing_note: "Draft a concise SOAP nursing note (Subjective, Objective, Assessment, Plan). 6-10 lines total. Plain English, no diagnosis.",
+  handover: "Draft an SBAR shift handover (Situation, Background, Assessment, Recommendation). 6-10 lines total.",
+  care_plan: "Draft a nursing care plan with 3-5 prioritized problems. For each: nursing diagnosis (NANDA-style problem statement), goal, 2-3 interventions, evaluation criterion.",
+  patient_education: "Draft a short, plain-language patient education sheet (200-300 words) tailored to this patient's condition and current meds. Use bullet points and a 'when to seek help' section.",
+};
+
+export const runNursingAssistant = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => assistantSchema.parse(d))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+
+    const [{ data: patient }, { data: vitals }, { data: meds }, { data: notes }] = await Promise.all([
+      supabase.from("patients").select("full_name, date_of_birth, sex, primary_diagnosis, allergies").eq("id", data.patient_id).maybeSingle(),
+      supabase.from("vitals").select("recorded_at, heart_rate, systolic_bp, diastolic_bp, spo2, temperature_c, respiratory_rate, blood_sugar_mgdl").eq("patient_id", data.patient_id).order("recorded_at", { ascending: false }).limit(5),
+      supabase.from("medications").select("name, dosage, frequency, route").eq("patient_id", data.patient_id).eq("active", true),
+      supabase.from("nursing_notes").select("body, created_at").eq("patient_id", data.patient_id).order("created_at", { ascending: false }).limit(3),
+    ]);
+
+    const apiKey = process.env.LOVABLE_API_KEY;
+    if (!apiKey) {
+      return { content: "AI is not configured. Set LOVABLE_API_KEY to enable the nursing assistant." };
+    }
+
+    const payload = {
+      patient,
+      recent_vitals: vitals ?? [],
+      active_medications: meds ?? [],
+      recent_notes: notes ?? [],
+      additional_context: data.context ?? null,
+    };
+
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          { role: "system", content: `You are a clinical nursing assistant supporting licensed nurses. ${MODE_PROMPTS[data.mode]} End with the line: "— AI draft. Verify before charting."` },
+          { role: "user", content: JSON.stringify(payload) },
+        ],
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`AI gateway error: ${res.status} ${text}`);
+    }
+    const j = await res.json();
+    const content: string = j.choices?.[0]?.message?.content ?? "No content returned.";
+    return { content };
+  });
