@@ -70,6 +70,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Link to="/dashboard" className="flex items-center gap-2 font-semibold">
           <HeartPulse className="h-5 w-5 text-primary" /> NurseGuard
         </Link>
+        <div className="ml-auto">
+          <UserMenu variant="topbar" />
+        </div>
       </div>
 
       {/* sidebar — desktop */}
