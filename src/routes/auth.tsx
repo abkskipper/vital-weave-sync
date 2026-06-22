@@ -132,7 +132,34 @@ function AuthPage() {
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" autoComplete={mode === "signin" ? "current-password" : "new-password"} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+              <PasswordInput
+                id="password"
+                autoComplete={mode === "signin" ? "current-password" : "new-password"}
+                required
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                aria-describedby={mode === "signup" ? "password-requirements" : undefined}
+              />
+              {mode === "signup" && form.password.length > 0 && (
+                <PasswordStrength password={form.password} />
+              )}
+              {mode === "signup" && (
+                <ul id="password-requirements" className="mt-2 space-y-1 text-xs text-muted-foreground">
+                  {passwordRequirements.map((req) => {
+                    const passed = req.test(form.password);
+                    return (
+                      <li key={req.label} className="flex items-center gap-1.5">
+                        {passed ? (
+                          <Check className="h-3 w-3 text-emerald-600" />
+                        ) : (
+                          <X className="h-3 w-3 text-muted-foreground" />
+                        )}
+                        <span className={passed ? "text-emerald-700" : ""}>{req.label}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
