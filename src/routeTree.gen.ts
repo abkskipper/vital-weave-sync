@@ -13,6 +13,8 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedMentalHealthRouteImport } from './routes/_authenticated/mental-health'
 import { Route as AuthenticatedMedicationsRouteImport } from './routes/_authenticated/medications'
 import { Route as AuthenticatedMaternalRouteImport } from './routes/_authenticated/maternal'
@@ -46,6 +48,17 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMentalHealthRoute =
   AuthenticatedMentalHealthRouteImport.update({
     id: '/mental-health',
@@ -131,6 +144,8 @@ export interface FileRoutesByFullPath {
   '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
   '/mental-health': typeof AuthenticatedMentalHealthRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
+  '/reports': typeof AuthenticatedReportsRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -149,6 +164,8 @@ export interface FileRoutesByTo {
   '/maternal': typeof AuthenticatedMaternalRoute
   '/medications': typeof AuthenticatedMedicationsRoute
   '/mental-health': typeof AuthenticatedMentalHealthRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
+  '/reports': typeof AuthenticatedReportsRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
@@ -169,6 +186,8 @@ export interface FileRoutesById {
   '/_authenticated/maternal': typeof AuthenticatedMaternalRoute
   '/_authenticated/medications': typeof AuthenticatedMedicationsRoute
   '/_authenticated/mental-health': typeof AuthenticatedMentalHealthRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -189,6 +208,8 @@ export interface FileRouteTypes {
     | '/maternal'
     | '/medications'
     | '/mental-health'
+    | '/notifications'
+    | '/reports'
     | '/patients/$id'
     | '/vitals/new'
     | '/patients/'
@@ -207,6 +228,8 @@ export interface FileRouteTypes {
     | '/maternal'
     | '/medications'
     | '/mental-health'
+    | '/notifications'
+    | '/reports'
     | '/patients/$id'
     | '/vitals/new'
     | '/patients'
@@ -226,6 +249,8 @@ export interface FileRouteTypes {
     | '/_authenticated/maternal'
     | '/_authenticated/medications'
     | '/_authenticated/mental-health'
+    | '/_authenticated/notifications'
+    | '/_authenticated/reports'
     | '/_authenticated/patients/$id'
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
@@ -269,6 +294,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/mental-health': {
       id: '/_authenticated/mental-health'
@@ -374,6 +413,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMaternalRoute: typeof AuthenticatedMaternalRoute
   AuthenticatedMedicationsRoute: typeof AuthenticatedMedicationsRoute
   AuthenticatedMentalHealthRoute: typeof AuthenticatedMentalHealthRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedPatientsIdRoute: typeof AuthenticatedPatientsIdRoute
   AuthenticatedVitalsNewRoute: typeof AuthenticatedVitalsNewRoute
   AuthenticatedPatientsIndexRoute: typeof AuthenticatedPatientsIndexRoute
@@ -389,6 +430,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMaternalRoute: AuthenticatedMaternalRoute,
   AuthenticatedMedicationsRoute: AuthenticatedMedicationsRoute,
   AuthenticatedMentalHealthRoute: AuthenticatedMentalHealthRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedPatientsIdRoute: AuthenticatedPatientsIdRoute,
   AuthenticatedVitalsNewRoute: AuthenticatedVitalsNewRoute,
   AuthenticatedPatientsIndexRoute: AuthenticatedPatientsIndexRoute,

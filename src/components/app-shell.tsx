@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
-import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, LogOut, Menu, X, Baby, Brain, Home, Sparkles, CreditCard } from "lucide-react";
+import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, LogOut, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +17,8 @@ const nav = [
   { to: "/home-care", label: "Home Care", icon: Home },
   { to: "/ai-assistant", label: "AI Assistant", icon: Sparkles },
   { to: "/alerts", label: "Alerts", icon: Bell },
+  { to: "/notifications", label: "Notifications", icon: BellRing },
+  { to: "/reports", label: "Reports", icon: FileText },
   { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
 
