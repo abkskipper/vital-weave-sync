@@ -24,7 +24,7 @@ function ReportsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("patients")
-        .select("id, full_name, mrn, date_of_birth, sex, primary_diagnosis, allergies")
+        .select("id, full_name, mrn, date_of_birth, sex, medical_history, allergies")
         .order("full_name");
       if (error) throw error;
       return data ?? [];
@@ -67,7 +67,7 @@ function ReportsPage() {
       const dob = patient.date_of_birth ? new Date(patient.date_of_birth).toLocaleDateString() : "—";
       doc.text(`MRN: ${patient.mrn ?? "—"}    DOB: ${dob}    Sex: ${patient.sex ?? "—"}`, margin, y);
       y += 4;
-      doc.text(`Diagnosis: ${patient.primary_diagnosis ?? "—"}`, margin, y);
+      doc.text(`Diagnosis: ${patient.medical_history ?? "—"}`, margin, y);
       y += 4;
       doc.text(`Allergies: ${patient.allergies ?? "—"}`, margin, y);
       y += 6;

@@ -104,7 +104,7 @@ export const runNursingAssistant = createServerFn({ method: "POST" })
     const { supabase } = context;
 
     const [{ data: patient }, { data: vitals }, { data: meds }, { data: notes }] = await Promise.all([
-      supabase.from("patients").select("full_name, date_of_birth, sex, primary_diagnosis, allergies").eq("id", data.patient_id).maybeSingle(),
+      supabase.from("patients").select("full_name, date_of_birth, sex, medical_history, allergies").eq("id", data.patient_id).maybeSingle(),
       supabase.from("vitals").select("recorded_at, heart_rate, systolic_bp, diastolic_bp, spo2, temperature_c, respiratory_rate, blood_sugar_mgdl").eq("patient_id", data.patient_id).order("recorded_at", { ascending: false }).limit(5),
       supabase.from("medications").select("name, dosage, frequency, route").eq("patient_id", data.patient_id).eq("active", true),
       supabase.from("nursing_notes").select("body, created_at").eq("patient_id", data.patient_id).order("created_at", { ascending: false }).limit(3),
