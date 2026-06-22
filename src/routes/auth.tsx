@@ -182,3 +182,22 @@ function AuthPage() {
     </div>
   );
 }
+
+function PasswordStrength({ password }: { password: string }) {
+  const { score, label, color } = getPasswordStrength(password);
+  return (
+    <div className="mt-2">
+      <div className="flex gap-1" aria-hidden="true">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full transition-colors ${i < score ? color : "bg-muted"}`}
+          />
+        ))}
+      </div>
+      <p className="mt-1 text-xs text-muted-foreground" aria-live="polite">
+        Password strength: <span className="font-medium text-foreground">{label}</span>
+      </p>
+    </div>
+  );
+}
