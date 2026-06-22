@@ -1,10 +1,9 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
-import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, LogOut, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText } from "lucide-react";
+import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "@/components/user-menu";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -23,23 +22,10 @@ const nav = [
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => { setOpen(false); }, [pathname]);
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null));
-  }, []);
-
-  const signOut = async () => {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
-  };
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
@@ -49,7 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </span>
         <span>NurseGuard <span className="text-sidebar-primary">AI</span></span>
       </Link>
-      <nav className="flex-1 space-y-1 px-3">
+      <nav className="flex-1 space-y-1 overflow-y-auto px-3">
         {nav.map((n) => {
           const active = pathname === n.to || (n.to !== "/dashboard" && pathname.startsWith(n.to));
           return (
@@ -69,14 +55,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t border-sidebar-border p-4">
-        <p className="truncate text-xs text-sidebar-foreground/70">{email}</p>
-        <Button onClick={signOut} variant="ghost" size="sm" className="mt-2 w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent">
-          <LogOut className="mr-2 h-4 w-4" /> Sign out
-        </Button>
+      <div className="border-t border-sidebar-border p-3">
+        <UserMenu variant="sidebar" />
       </div>
     </div>
   );
+
 
   return (
     <div className="min-h-screen bg-secondary/30">
@@ -86,6 +70,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Link to="/dashboard" className="flex items-center gap-2 font-semibold">
           <HeartPulse className="h-5 w-5 text-primary" /> NurseGuard
         </Link>
+        <div className="ml-auto">
+          <UserMenu variant="topbar" />
+        </div>
       </div>
 
       {/* sidebar — desktop */}
