@@ -1,10 +1,9 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
-import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, LogOut, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText } from "lucide-react";
+import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "@/components/user-menu";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
