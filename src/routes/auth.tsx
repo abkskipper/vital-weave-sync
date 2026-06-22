@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { HeartPulse, Loader2 } from "lucide-react";
+import { PasswordInput, getPasswordStrength, passwordRequirements } from "@/components/ui/password-input";
+import { HeartPulse, Loader2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -131,7 +132,34 @@ function AuthPage() {
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" autoComplete={mode === "signin" ? "current-password" : "new-password"} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+              <PasswordInput
+                id="password"
+                autoComplete={mode === "signin" ? "current-password" : "new-password"}
+                required
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                aria-describedby={mode === "signup" ? "password-requirements" : undefined}
+              />
+              {mode === "signup" && form.password.length > 0 && (
+                <PasswordStrength password={form.password} />
+              )}
+              {mode === "signup" && (
+                <ul id="password-requirements" className="mt-2 space-y-1 text-xs text-muted-foreground">
+                  {passwordRequirements.map((req) => {
+                    const passed = req.test(form.password);
+                    return (
+                      <li key={req.label} className="flex items-center gap-1.5">
+                        {passed ? (
+                          <Check className="h-3 w-3 text-emerald-600" />
+                        ) : (
+                          <X className="h-3 w-3 text-muted-foreground" />
+                        )}
+                        <span className={passed ? "text-emerald-700" : ""}>{req.label}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -151,6 +179,25 @@ function AuthPage() {
           By continuing, you agree to NurseGuard AI's terms and acknowledge AI features are clinical support, not a diagnosis.
         </p>
       </div>
+    </div>
+  );
+}
+
+function PasswordStrength({ password }: { password: string }) {
+  const { score, label, color } = getPasswordStrength(password);
+  return (
+    <div className="mt-2">
+      <div className="flex gap-1" aria-hidden="true">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full transition-colors ${i < score ? color : "bg-muted"}`}
+          />
+        ))}
+      </div>
+      <p className="mt-1 text-xs text-muted-foreground" aria-live="polite">
+        Password strength: <span className="font-medium text-foreground">{label}</span>
+      </p>
     </div>
   );
 }
