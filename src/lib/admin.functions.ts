@@ -357,7 +357,7 @@ export const updatePlatformSettings = createServerFn({ method: "POST" })
     const admin = await getAdmin();
     await admin
       .from("platform_settings")
-      .upsert({ id: true, data: data.data, updated_at: new Date().toISOString(), updated_by: context.userId });
+      .upsert({ id: true, data: data.data as any, updated_at: new Date().toISOString(), updated_by: context.userId });
     await audit(context.userId, context.claims.email, "settings.update", "platform_settings", "singleton", data.data);
     return { ok: true };
   });
