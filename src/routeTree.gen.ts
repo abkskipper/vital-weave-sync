@@ -32,6 +32,7 @@ import { Route as AuthenticatedSuperAdminIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedPatientsIndexRouteImport } from './routes/_authenticated/patients.index'
 import { Route as AuthenticatedVitalsNewRouteImport } from './routes/_authenticated/vitals.new'
 import { Route as AuthenticatedSuperAdminUsersRouteImport } from './routes/_authenticated/super-admin.users'
+import { Route as AuthenticatedSuperAdminHospitalsRouteImport } from './routes/_authenticated/super-admin.hospitals'
 import { Route as AuthenticatedPatientsIdRouteImport } from './routes/_authenticated/patients.$id'
 import { Route as ApiPublicWebhooksPaystackRouteImport } from './routes/api/public/webhooks/paystack'
 
@@ -158,6 +159,12 @@ const AuthenticatedSuperAdminUsersRoute =
     path: '/users',
     getParentRoute: () => AuthenticatedSuperAdminRoute,
   } as any)
+const AuthenticatedSuperAdminHospitalsRoute =
+  AuthenticatedSuperAdminHospitalsRouteImport.update({
+    id: '/hospitals',
+    path: '/hospitals',
+    getParentRoute: () => AuthenticatedSuperAdminRoute,
+  } as any)
 const AuthenticatedPatientsIdRoute = AuthenticatedPatientsIdRouteImport.update({
   id: '/patients/$id',
   path: '/patients/$id',
@@ -190,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/super-admin': typeof AuthenticatedSuperAdminRouteWithChildren
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
+  '/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/super-admin/users': typeof AuthenticatedSuperAdminUsersRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -215,6 +223,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
+  '/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/super-admin/users': typeof AuthenticatedSuperAdminUsersRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
@@ -243,6 +252,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/super-admin': typeof AuthenticatedSuperAdminRouteWithChildren
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
+  '/_authenticated/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/_authenticated/super-admin/users': typeof AuthenticatedSuperAdminUsersRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/super-admin'
     | '/patients/$id'
+    | '/super-admin/hospitals'
     | '/super-admin/users'
     | '/vitals/new'
     | '/patients/'
@@ -296,6 +307,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/patients/$id'
+    | '/super-admin/hospitals'
     | '/super-admin/users'
     | '/vitals/new'
     | '/patients'
@@ -323,6 +335,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/super-admin'
     | '/_authenticated/patients/$id'
+    | '/_authenticated/super-admin/hospitals'
     | '/_authenticated/super-admin/users'
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
@@ -501,6 +514,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminUsersRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRoute
     }
+    '/_authenticated/super-admin/hospitals': {
+      id: '/_authenticated/super-admin/hospitals'
+      path: '/hospitals'
+      fullPath: '/super-admin/hospitals'
+      preLoaderRoute: typeof AuthenticatedSuperAdminHospitalsRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRoute
+    }
     '/_authenticated/patients/$id': {
       id: '/_authenticated/patients/$id'
       path: '/patients/$id'
@@ -519,12 +539,15 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedSuperAdminRouteChildren {
+  AuthenticatedSuperAdminHospitalsRoute: typeof AuthenticatedSuperAdminHospitalsRoute
   AuthenticatedSuperAdminUsersRoute: typeof AuthenticatedSuperAdminUsersRoute
   AuthenticatedSuperAdminIndexRoute: typeof AuthenticatedSuperAdminIndexRoute
 }
 
 const AuthenticatedSuperAdminRouteChildren: AuthenticatedSuperAdminRouteChildren =
   {
+    AuthenticatedSuperAdminHospitalsRoute:
+      AuthenticatedSuperAdminHospitalsRoute,
     AuthenticatedSuperAdminUsersRoute: AuthenticatedSuperAdminUsersRoute,
     AuthenticatedSuperAdminIndexRoute: AuthenticatedSuperAdminIndexRoute,
   }
