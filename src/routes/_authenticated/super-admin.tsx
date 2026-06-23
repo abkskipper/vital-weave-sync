@@ -40,7 +40,7 @@ function SuperAdminLayout() {
       </header>
       <nav className="flex flex-wrap gap-1 border-b border-border">
         {tabs.map((t) => {
-          const active = t.exact ? pathname === t.to : pathname.startsWith(t.to);
+          const active = "exact" in t && t.exact ? pathname === t.to : pathname.startsWith(t.to);
           return (
             <Link
               key={t.to}
