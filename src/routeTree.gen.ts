@@ -32,6 +32,7 @@ import { Route as AuthenticatedSuperAdminIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedPatientsIndexRouteImport } from './routes/_authenticated/patients.index'
 import { Route as AuthenticatedVitalsNewRouteImport } from './routes/_authenticated/vitals.new'
 import { Route as AuthenticatedSuperAdminUsersRouteImport } from './routes/_authenticated/super-admin.users'
+import { Route as AuthenticatedSuperAdminSettingsRouteImport } from './routes/_authenticated/super-admin.settings'
 import { Route as AuthenticatedSuperAdminSecurityRouteImport } from './routes/_authenticated/super-admin.security'
 import { Route as AuthenticatedSuperAdminRevenueRouteImport } from './routes/_authenticated/super-admin.revenue'
 import { Route as AuthenticatedSuperAdminHospitalsRouteImport } from './routes/_authenticated/super-admin.hospitals'
@@ -163,6 +164,12 @@ const AuthenticatedSuperAdminUsersRoute =
     path: '/users',
     getParentRoute: () => AuthenticatedSuperAdminRoute,
   } as any)
+const AuthenticatedSuperAdminSettingsRoute =
+  AuthenticatedSuperAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedSuperAdminRoute,
+  } as any)
 const AuthenticatedSuperAdminSecurityRoute =
   AuthenticatedSuperAdminSecurityRouteImport.update({
     id: '/security',
@@ -230,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/super-admin/revenue': typeof AuthenticatedSuperAdminRevenueRoute
   '/super-admin/security': typeof AuthenticatedSuperAdminSecurityRoute
+  '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/users': typeof AuthenticatedSuperAdminUsersRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -260,6 +268,7 @@ export interface FileRoutesByTo {
   '/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/super-admin/revenue': typeof AuthenticatedSuperAdminRevenueRoute
   '/super-admin/security': typeof AuthenticatedSuperAdminSecurityRoute
+  '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/users': typeof AuthenticatedSuperAdminUsersRoute
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
@@ -293,6 +302,7 @@ export interface FileRoutesById {
   '/_authenticated/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/_authenticated/super-admin/revenue': typeof AuthenticatedSuperAdminRevenueRoute
   '/_authenticated/super-admin/security': typeof AuthenticatedSuperAdminSecurityRoute
+  '/_authenticated/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/_authenticated/super-admin/users': typeof AuthenticatedSuperAdminUsersRoute
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
@@ -326,6 +336,7 @@ export interface FileRouteTypes {
     | '/super-admin/hospitals'
     | '/super-admin/revenue'
     | '/super-admin/security'
+    | '/super-admin/settings'
     | '/super-admin/users'
     | '/vitals/new'
     | '/patients/'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/super-admin/hospitals'
     | '/super-admin/revenue'
     | '/super-admin/security'
+    | '/super-admin/settings'
     | '/super-admin/users'
     | '/vitals/new'
     | '/patients'
@@ -388,6 +400,7 @@ export interface FileRouteTypes {
     | '/_authenticated/super-admin/hospitals'
     | '/_authenticated/super-admin/revenue'
     | '/_authenticated/super-admin/security'
+    | '/_authenticated/super-admin/settings'
     | '/_authenticated/super-admin/users'
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
@@ -566,6 +579,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminUsersRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRoute
     }
+    '/_authenticated/super-admin/settings': {
+      id: '/_authenticated/super-admin/settings'
+      path: '/settings'
+      fullPath: '/super-admin/settings'
+      preLoaderRoute: typeof AuthenticatedSuperAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRoute
+    }
     '/_authenticated/super-admin/security': {
       id: '/_authenticated/super-admin/security'
       path: '/security'
@@ -624,6 +644,7 @@ interface AuthenticatedSuperAdminRouteChildren {
   AuthenticatedSuperAdminHospitalsRoute: typeof AuthenticatedSuperAdminHospitalsRoute
   AuthenticatedSuperAdminRevenueRoute: typeof AuthenticatedSuperAdminRevenueRoute
   AuthenticatedSuperAdminSecurityRoute: typeof AuthenticatedSuperAdminSecurityRoute
+  AuthenticatedSuperAdminSettingsRoute: typeof AuthenticatedSuperAdminSettingsRoute
   AuthenticatedSuperAdminUsersRoute: typeof AuthenticatedSuperAdminUsersRoute
   AuthenticatedSuperAdminIndexRoute: typeof AuthenticatedSuperAdminIndexRoute
 }
@@ -637,6 +658,7 @@ const AuthenticatedSuperAdminRouteChildren: AuthenticatedSuperAdminRouteChildren
       AuthenticatedSuperAdminHospitalsRoute,
     AuthenticatedSuperAdminRevenueRoute: AuthenticatedSuperAdminRevenueRoute,
     AuthenticatedSuperAdminSecurityRoute: AuthenticatedSuperAdminSecurityRoute,
+    AuthenticatedSuperAdminSettingsRoute: AuthenticatedSuperAdminSettingsRoute,
     AuthenticatedSuperAdminUsersRoute: AuthenticatedSuperAdminUsersRoute,
     AuthenticatedSuperAdminIndexRoute: AuthenticatedSuperAdminIndexRoute,
   }
