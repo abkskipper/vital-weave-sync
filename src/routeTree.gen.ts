@@ -36,6 +36,7 @@ import { Route as AuthenticatedSuperAdminSecurityRouteImport } from './routes/_a
 import { Route as AuthenticatedSuperAdminRevenueRouteImport } from './routes/_authenticated/super-admin.revenue'
 import { Route as AuthenticatedSuperAdminHospitalsRouteImport } from './routes/_authenticated/super-admin.hospitals'
 import { Route as AuthenticatedSuperAdminAuditRouteImport } from './routes/_authenticated/super-admin.audit'
+import { Route as AuthenticatedSuperAdminAnnouncementsRouteImport } from './routes/_authenticated/super-admin.announcements'
 import { Route as AuthenticatedPatientsIdRouteImport } from './routes/_authenticated/patients.$id'
 import { Route as ApiPublicWebhooksPaystackRouteImport } from './routes/api/public/webhooks/paystack'
 
@@ -186,6 +187,12 @@ const AuthenticatedSuperAdminAuditRoute =
     path: '/audit',
     getParentRoute: () => AuthenticatedSuperAdminRoute,
   } as any)
+const AuthenticatedSuperAdminAnnouncementsRoute =
+  AuthenticatedSuperAdminAnnouncementsRouteImport.update({
+    id: '/announcements',
+    path: '/announcements',
+    getParentRoute: () => AuthenticatedSuperAdminRoute,
+  } as any)
 const AuthenticatedPatientsIdRoute = AuthenticatedPatientsIdRouteImport.update({
   id: '/patients/$id',
   path: '/patients/$id',
@@ -218,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/super-admin': typeof AuthenticatedSuperAdminRouteWithChildren
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
+  '/super-admin/announcements': typeof AuthenticatedSuperAdminAnnouncementsRoute
   '/super-admin/audit': typeof AuthenticatedSuperAdminAuditRoute
   '/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/super-admin/revenue': typeof AuthenticatedSuperAdminRevenueRoute
@@ -247,6 +255,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/patients/$id': typeof AuthenticatedPatientsIdRoute
+  '/super-admin/announcements': typeof AuthenticatedSuperAdminAnnouncementsRoute
   '/super-admin/audit': typeof AuthenticatedSuperAdminAuditRoute
   '/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/super-admin/revenue': typeof AuthenticatedSuperAdminRevenueRoute
@@ -279,6 +288,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/super-admin': typeof AuthenticatedSuperAdminRouteWithChildren
   '/_authenticated/patients/$id': typeof AuthenticatedPatientsIdRoute
+  '/_authenticated/super-admin/announcements': typeof AuthenticatedSuperAdminAnnouncementsRoute
   '/_authenticated/super-admin/audit': typeof AuthenticatedSuperAdminAuditRoute
   '/_authenticated/super-admin/hospitals': typeof AuthenticatedSuperAdminHospitalsRoute
   '/_authenticated/super-admin/revenue': typeof AuthenticatedSuperAdminRevenueRoute
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/super-admin'
     | '/patients/$id'
+    | '/super-admin/announcements'
     | '/super-admin/audit'
     | '/super-admin/hospitals'
     | '/super-admin/revenue'
@@ -340,6 +351,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/patients/$id'
+    | '/super-admin/announcements'
     | '/super-admin/audit'
     | '/super-admin/hospitals'
     | '/super-admin/revenue'
@@ -371,6 +383,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/super-admin'
     | '/_authenticated/patients/$id'
+    | '/_authenticated/super-admin/announcements'
     | '/_authenticated/super-admin/audit'
     | '/_authenticated/super-admin/hospitals'
     | '/_authenticated/super-admin/revenue'
@@ -581,6 +594,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminAuditRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRoute
     }
+    '/_authenticated/super-admin/announcements': {
+      id: '/_authenticated/super-admin/announcements'
+      path: '/announcements'
+      fullPath: '/super-admin/announcements'
+      preLoaderRoute: typeof AuthenticatedSuperAdminAnnouncementsRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRoute
+    }
     '/_authenticated/patients/$id': {
       id: '/_authenticated/patients/$id'
       path: '/patients/$id'
@@ -599,6 +619,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedSuperAdminRouteChildren {
+  AuthenticatedSuperAdminAnnouncementsRoute: typeof AuthenticatedSuperAdminAnnouncementsRoute
   AuthenticatedSuperAdminAuditRoute: typeof AuthenticatedSuperAdminAuditRoute
   AuthenticatedSuperAdminHospitalsRoute: typeof AuthenticatedSuperAdminHospitalsRoute
   AuthenticatedSuperAdminRevenueRoute: typeof AuthenticatedSuperAdminRevenueRoute
@@ -609,6 +630,8 @@ interface AuthenticatedSuperAdminRouteChildren {
 
 const AuthenticatedSuperAdminRouteChildren: AuthenticatedSuperAdminRouteChildren =
   {
+    AuthenticatedSuperAdminAnnouncementsRoute:
+      AuthenticatedSuperAdminAnnouncementsRoute,
     AuthenticatedSuperAdminAuditRoute: AuthenticatedSuperAdminAuditRoute,
     AuthenticatedSuperAdminHospitalsRoute:
       AuthenticatedSuperAdminHospitalsRoute,
