@@ -38,7 +38,7 @@ async function audit(
       status,
       ip: getRequestIP({ xForwardedFor: true }) ?? null,
       user_agent: getRequestHeader("user-agent") ?? null,
-      metadata,
+      metadata: metadata as any,
     });
   } catch (e) {
     console.error("audit log failed", e);
