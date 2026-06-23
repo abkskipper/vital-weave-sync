@@ -27,6 +27,11 @@ const baseNav = [
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
+  const roles = useQuery({ queryKey: ["my-roles"], queryFn: getCurrentRoles, staleTime: 60_000 });
+  const isSuper = (roles.data ?? []).includes("super_admin");
+  const nav = isSuper
+    ? [...baseNav, { to: "/super-admin", label: "Super Admin", icon: Shield } as const]
+    : baseNav;
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
@@ -40,6 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </Link>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3">
         {nav.map((n) => {
+
           const active = pathname === n.to || (n.to !== "/dashboard" && pathname.startsWith(n.to));
           return (
             <Link
