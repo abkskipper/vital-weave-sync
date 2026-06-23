@@ -2,11 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader, getRequestIP } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-type Ctx = {
-  supabase: Awaited<ReturnType<typeof requireSupabaseAuth.server>> extends never ? never : any;
-  userId: string;
-  claims: { email?: string } & Record<string, unknown>;
-};
+
 
 async function assertSuperAdmin(context: { supabase: any; userId: string }) {
   const { data, error } = await context.supabase.rpc("has_role", {
