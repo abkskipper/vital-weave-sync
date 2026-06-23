@@ -190,7 +190,7 @@ export const listUsers = createServerFn({ method: "GET" })
     const { data: rows, error } = await context.supabase.rpc("admin_list_users", {
       _limit: data.limit,
       _offset: data.offset,
-      _search: data.search,
+      _search: data.search ?? undefined,
     });
     if (error) throw new Error(error.message);
     return rows ?? [];
