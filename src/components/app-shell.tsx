@@ -1,11 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { HeartPulse, LayoutDashboard, Users, Activity, Pill, CalendarDays, Bell, BellRing, Menu, X, Baby, Brain, Home, Sparkles, CreditCard, FileText, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "@/components/user-menu";
+import { getCurrentRoles } from "@/lib/roles";
 
-const nav = [
+const baseNav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/patients", label: "Patients", icon: Users },
   { to: "/vitals/new", label: "Record vitals", icon: Activity },
@@ -20,6 +22,7 @@ const nav = [
   { to: "/reports", label: "Reports", icon: FileText },
   { to: "/billing", label: "Billing", icon: CreditCard },
 ] as const;
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
