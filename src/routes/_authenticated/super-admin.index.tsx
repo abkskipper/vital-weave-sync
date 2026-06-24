@@ -1,14 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { useEffect } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { getPlatformOverview, getRevenueSeries } from "@/lib/admin.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Building2, Activity, AlertTriangle, Wallet, CreditCard, BadgeDollarSign, HeartPulse } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Users, Activity, Wallet, CreditCard, BadgeDollarSign, HeartPulse, FileDown } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/super-admin/")({
   component: Overview,
 });
+
 
 const fmtNGN = (n: number) => "₦" + (n ?? 0).toLocaleString();
 
