@@ -324,8 +324,46 @@ export const sendAnnouncement = createServerFn({ method: "POST" })
       .select()
       .single();
     if (error) throw new Error(error.message);
-    await audit(context.userId, context.claims.email, "announcement.send", "announcement", row.id, data);
-    return row;
+
+    // Fan-out to in-app alerts
+    let recipientIds: string[] = [];
+    if (data.target_role) {
+      const { data: roleRows } = await admin
+        .from("user_roles")
+        .select("user_id")
+        .eq("role", data.target_role as any);
+      recipientIds = (roleRows ?? []).map((r: any) => r.user_id);
+    } else {
+      const { data: profs } = await admin.from("profiles").select("id");
+      recipientIds = (profs ?? []).map((p: any) => p.id);
+    }
+    let delivered = 0;
+    if (recipientIds.length > 0) {
+      const { data: alertRow, error: aerr } = await admin
+        .from("alerts")
+        .insert({
+          severity: data.severity ?? "info",
+          category: "announcement",
+          title: data.title,
+          body: data.body,
+          source: "super_admin",
+        })
+        .select("id")
+        .single();
+      if (!aerr && alertRow) {
+        const recs = recipientIds.map((uid) => ({ alert_id: alertRow.id, user_id: uid }));
+        // Chunk to avoid payload limits
+        for (let i = 0; i < recs.length; i += 500) {
+          await admin.from("alert_recipients").insert(recs.slice(i, i + 500));
+        }
+        delivered = recipientIds.length;
+      }
+    }
+    await audit(context.userId, context.claims.email, "announcement.send", "announcement", row.id, {
+      ...data,
+      delivered,
+    });
+    return { ...row, delivered };
   });
 
 export const listAnnouncements = createServerFn({ method: "GET" })
