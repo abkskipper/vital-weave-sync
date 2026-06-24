@@ -21,7 +21,18 @@ function ApptPage() {
   const [form, setForm] = useState({ patient_id: "", title: "", starts_at: "", location: "" });
   const patients = useQuery({
     queryKey: ["patients-mini"],
-    queryFn: async () => (await supabase.from("patients").select("id, full_name").order("full_name")).data ?? [],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("patients")
+        .select("id, full_name")
+        .order("full_name");
+      if (error) {
+        console.error("[appointments] failed to load patients:", error);
+        throw error;
+      }
+      console.log(`[appointments] loaded ${data?.length ?? 0} patient(s)`);
+      return data ?? [];
+    },
   });
   const appts = useQuery({
     queryKey: ["appts"],
