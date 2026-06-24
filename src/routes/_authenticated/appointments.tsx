@@ -21,7 +21,18 @@ function ApptPage() {
   const [form, setForm] = useState({ patient_id: "", title: "", starts_at: "", location: "" });
   const patients = useQuery({
     queryKey: ["patients-mini"],
-    queryFn: async () => (await supabase.from("patients").select("id, full_name").order("full_name")).data ?? [],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("patients")
+        .select("id, full_name")
+        .order("full_name");
+      if (error) {
+        console.error("[appointments] failed to load patients:", error);
+        throw error;
+      }
+      console.log(`[appointments] loaded ${data?.length ?? 0} patient(s)`);
+      return data ?? [];
+    },
   });
   const appts = useQuery({
     queryKey: ["appts"],
@@ -56,16 +67,40 @@ function ApptPage() {
           <DialogContent>
             <DialogHeader><DialogTitle>New appointment</DialogTitle></DialogHeader>
             <div className="space-y-3">
-              <div><Label>Patient</Label>
-                <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={form.patient_id} onChange={(e) => setForm({ ...form, patient_id: e.target.value })}>
-                  <option value="">— Select —</option>
+              <div>
+                <Label>Patient</Label>
+                <select
+                  className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm disabled:opacity-60"
+                  value={form.patient_id}
+                  onChange={(e) => setForm({ ...form, patient_id: e.target.value })}
+                  disabled={patients.isLoading || !patients.data?.length}
+                >
+                  <option value="">
+                    {patients.isLoading
+                      ? "Loading patients…"
+                      : patients.isError
+                        ? "Failed to load patients"
+                        : !patients.data?.length
+                          ? "No patients available"
+                          : "— Select —"}
+                  </option>
                   {patients.data?.map((p) => <option key={p.id} value={p.id}>{p.full_name}</option>)}
                 </select>
+                {patients.isError && (
+                  <p className="mt-1 text-xs text-destructive">
+                    {(patients.error as Error)?.message ?? "Unable to load patients."}
+                  </p>
+                )}
+                {!patients.isLoading && !patients.isError && !patients.data?.length && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    No patients are assigned to you yet. Add a patient or ask an admin to assign one.
+                  </p>
+                )}
               </div>
               <div><Label>Title</Label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
               <div><Label>Date & time</Label><Input type="datetime-local" value={form.starts_at} onChange={(e) => setForm({ ...form, starts_at: e.target.value })} /></div>
               <div><Label>Location</Label><Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} /></div>
-              <Button onClick={create} className="w-full">Schedule</Button>
+              <Button onClick={create} className="w-full" disabled={!form.patient_id || !form.title || !form.starts_at}>Schedule</Button>
             </div>
           </DialogContent>
         </Dialog>
