@@ -40,6 +40,7 @@ import { Route as AuthenticatedSuperAdminAuditRouteImport } from './routes/_auth
 import { Route as AuthenticatedSuperAdminAnnouncementsRouteImport } from './routes/_authenticated/super-admin.announcements'
 import { Route as AuthenticatedPatientsIdRouteImport } from './routes/_authenticated/patients.$id'
 import { Route as ApiPublicWebhooksPaystackRouteImport } from './routes/api/public/webhooks/paystack'
+import { Route as ApiPublicAdminBootstrapRouteImport } from './routes/api/public/admin/bootstrap'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -211,6 +212,11 @@ const ApiPublicWebhooksPaystackRoute =
     path: '/api/public/webhooks/paystack',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAdminBootstrapRoute = ApiPublicAdminBootstrapRouteImport.update({
+  id: '/api/public/admin/bootstrap',
+  path: '/api/public/admin/bootstrap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -242,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients/': typeof AuthenticatedPatientsIndexRoute
   '/super-admin/': typeof AuthenticatedSuperAdminIndexRoute
+  '/api/public/admin/bootstrap': typeof ApiPublicAdminBootstrapRoute
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRoutesByTo {
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/patients': typeof AuthenticatedPatientsIndexRoute
   '/super-admin': typeof AuthenticatedSuperAdminIndexRoute
+  '/api/public/admin/bootstrap': typeof ApiPublicAdminBootstrapRoute
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRoutesById {
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/_authenticated/vitals/new': typeof AuthenticatedVitalsNewRoute
   '/_authenticated/patients/': typeof AuthenticatedPatientsIndexRoute
   '/_authenticated/super-admin/': typeof AuthenticatedSuperAdminIndexRoute
+  '/api/public/admin/bootstrap': typeof ApiPublicAdminBootstrapRoute
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRouteTypes {
@@ -341,6 +350,7 @@ export interface FileRouteTypes {
     | '/vitals/new'
     | '/patients/'
     | '/super-admin/'
+    | '/api/public/admin/bootstrap'
     | '/api/public/webhooks/paystack'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/vitals/new'
     | '/patients'
     | '/super-admin'
+    | '/api/public/admin/bootstrap'
     | '/api/public/webhooks/paystack'
   id:
     | '__root__'
@@ -405,6 +416,7 @@ export interface FileRouteTypes {
     | '/_authenticated/vitals/new'
     | '/_authenticated/patients/'
     | '/_authenticated/super-admin/'
+    | '/api/public/admin/bootstrap'
     | '/api/public/webhooks/paystack'
   fileRoutesById: FileRoutesById
 }
@@ -413,6 +425,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiPublicAdminBootstrapRoute: typeof ApiPublicAdminBootstrapRoute
   ApiPublicWebhooksPaystackRoute: typeof ApiPublicWebhooksPaystackRoute
 }
 
@@ -635,6 +648,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebhooksPaystackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/admin/bootstrap': {
+      id: '/api/public/admin/bootstrap'
+      path: '/api/public/admin/bootstrap'
+      fullPath: '/api/public/admin/bootstrap'
+      preLoaderRoute: typeof ApiPublicAdminBootstrapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -718,8 +738,19 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiPublicAdminBootstrapRoute: ApiPublicAdminBootstrapRoute,
   ApiPublicWebhooksPaystackRoute: ApiPublicWebhooksPaystackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
