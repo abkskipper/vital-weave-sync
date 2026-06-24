@@ -34,21 +34,84 @@ function Kpi({ icon: Icon, label, value, sub }: any) {
 }
 
 function Overview() {
+  const qc = useQueryClient();
   const overviewFn = useServerFn(getPlatformOverview);
   const seriesFn = useServerFn(getRevenueSeries);
   const ov = useQuery({ queryKey: ["sa-overview"], queryFn: () => overviewFn() });
   const sr = useQuery({ queryKey: ["sa-series"], queryFn: () => seriesFn({ data: { days: 30 } }) });
 
+  // Realtime: refresh KPIs when audit_logs or alerts change.
+  useEffect(() => {
+    const ch = supabase
+      .channel("sa-overview-realtime")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "audit_logs" }, () => {
+        qc.invalidateQueries({ queryKey: ["sa-overview"] });
+        qc.invalidateQueries({ queryKey: ["sa-audit"] });
+      })
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "alerts" }, () => {
+        qc.invalidateQueries({ queryKey: ["sa-overview"] });
+      })
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "payment_transactions" }, () => {
+        qc.invalidateQueries({ queryKey: ["sa-overview"] });
+        qc.invalidateQueries({ queryKey: ["sa-series"] });
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
+  }, [qc]);
+
   if (ov.isLoading) return <div className="text-sm text-muted-foreground">Loading platform metrics…</div>;
   if (ov.error) return <div className="text-sm text-destructive">{(ov.error as Error).message}</div>;
   const d = ov.data!;
 
+  const exportPdf = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("NurseGuard AI — Executive Overview", 14, 16);
+    doc.setFontSize(9);
+    doc.setTextColor(120);
+    doc.text(`Generated ${new Date().toLocaleString()}`, 14, 22);
+    doc.setTextColor(20);
+    autoTable(doc, {
+      startY: 28,
+      head: [["Metric", "Value"]],
+      body: [
+        ["Total users", String(d.users.total)],
+        ["New today / 7d / 30d", `${d.users.today} / ${d.users.week} / ${d.users.month}`],
+        ["Patients", String(d.patients.total)],
+        ["Critical alerts", String(d.patients.critical)],
+        ["Revenue today", fmtNGN(d.revenue.today)],
+        ["Revenue 30d", fmtNGN(d.revenue.month)],
+        ["Revenue lifetime", fmtNGN(d.revenue.lifetime)],
+        ["Wallet balance", fmtNGN(d.wallet.balance)],
+        ["Wallet accounts", String(d.wallet.accounts)],
+        ["Payments success", String(d.payments.success ?? 0)],
+        ["Payments failed", String(d.payments.failed ?? 0)],
+      ],
+    });
+    if (Object.keys(d.users.byRole).length) {
+      autoTable(doc, {
+        head: [["Role", "Count"]],
+        body: Object.entries(d.users.byRole).map(([r, c]) => [r, String(c)]),
+      });
+    }
+    doc.save(`nurseguard-overview-${new Date().toISOString().slice(0, 10)}.pdf`);
+  };
+
   return (
     <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-xs text-muted-foreground">Live data · auto-refreshes on new events</p>
+        <Button variant="outline" size="sm" onClick={exportPdf}>
+          <FileDown className="mr-2 h-4 w-4" /> Export PDF
+        </Button>
+      </div>
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Kpi icon={Users} label="Total users" value={d.users.total} sub={`+${d.users.today} today · +${d.users.week} this week`} />
         <Kpi icon={HeartPulse} label="Patients" value={d.patients.total} sub={`${d.patients.critical} critical alerts`} />
         <Kpi icon={BadgeDollarSign} label="Revenue (30d)" value={fmtNGN(d.revenue.month)} sub={`Lifetime ${fmtNGN(d.revenue.lifetime)}`} />
+
         <Kpi icon={Wallet} label="Wallet balance" value={fmtNGN(d.wallet.balance)} sub={`${d.wallet.accounts} accounts`} />
       </section>
 
